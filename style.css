@@ -5,3 +5,14 @@
   justify-content: center;
   height: 100%;
 }
+
+#timer-text {
+}
+
+.timer-active {
+  color: green;
+}
+
+.timer-inactive {
+  color: red;
+}
