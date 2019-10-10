@@ -1,12 +1,12 @@
 const TIMER_DEFAULT = 1500;
+const toggleButton = document.querySelector('#toggle-btn');
 const timerElement = document.querySelector('#timer-text');
 const resetButton = document.querySelector('#reset-btn');
 
 let currentTimer = TIMER_DEFAULT;
-
 let timerInterval;
 
-document.querySelector('#toggle-btn').onclick = (e) => {
+toggleButton.onclick = (e) => {
   if (!timerInterval) {
     timerInterval = setInterval(() => {
       currentTimer -= 1;
@@ -36,12 +36,17 @@ resetButton.onclick = (e) => {
 }
 
 function getMinutes() {
-  var minutes = currentTimer % 60;
+  const minutes = currentTimer / 60;
   return minutes === 0 ? '00' : Math.floor(minutes);
 }
 
-function updateDisplay() {
-  timerElement.innerHTML = `${Math.floor(currentTimer / 60)}:${getMinutes()}`;
+function getSeconds() {
+  var seconds = currentTimer % 60;
+  return seconds === 0 ? '00' : Math.floor(seconds);
 }
 
-updateDisplay(`${Math.floor(currentTimer / 60)}:${getMinutes()}`);
+function updateDisplay() {
+  timerElement.innerHTML = `${getMinutes()}:${getSeconds()}`;
+}
+
+updateDisplay(`${Math.floor(currentTimer / 60)}:${getSeconds()}`);
