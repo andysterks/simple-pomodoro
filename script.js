@@ -1,5 +1,5 @@
-const POMODORO_COUNT = 3;
-const BREAK_COUNT = 5;
+const POMODORO_COUNT = 1500;
+const BREAK_COUNT = 300;
 const alarmSound = document.querySelector("#alarm-beep");
 const toggleButton = document.querySelector("#toggle-btn");
 const statusElement = document.querySelector("#status-text");
