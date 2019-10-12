@@ -10,9 +10,9 @@
 }
 
 .timer-active {
-  color: green;
+  color: red;
 }
 
 .timer-inactive {
-  color: red;
+  color: green;
 }
