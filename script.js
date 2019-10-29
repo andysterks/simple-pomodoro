@@ -1,16 +1,19 @@
 const POMODORO_COUNT = 1500;
-const BREAK_COUNT = 300;
+const REST_COUNT = 300;
 const alarmSound = document.querySelector("#alarm-beep");
 const toggleButton = document.querySelector("#toggle-btn");
 const statusElement = document.querySelector("#status-text");
 const timerElement = document.querySelector("#timer-text");
 const resetButton = document.querySelector("#reset-btn");
+const restButton = document.querySelector("#rest-btn");
+const workButton = document.querySelector("#work-btn");
 
-let currentTimer = POMODORO_COUNT;
-let timerIsActive = true;
+let workTimerCount = POMODORO_COUNT;
+let restTimerCount = REST_COUNT;
+let workTimerIsActive = true;
 let timerInterval;
 
-statusElement.innerHTML = 'Ready to get to work?';
+statusElement.innerHTML = "Ready to get to work?";
 
 toggleButton.onclick = e => {
   if (!timerInterval) {
@@ -20,24 +23,66 @@ toggleButton.onclick = e => {
   }
 };
 
+restButton.onclick = e => {
+  if (workTimerIsActive === false) {
+    return;
+  }
+  workTimerIsActive = false;
+  setRestTimer(restTimerCount);
+  statusElement.innerHTML = "Press start to begin your break!";
+
+  statusClass = "timer-inactive";
+  timerElement.className = statusClass;
+  statusElement.className = statusClass;
+};
+
+workButton.onclick = e => {
+  if (workTimerIsActive === true) {
+    return;
+  }
+  workTimerIsActive = true;
+  setTimer(workTimerCount);
+  statusElement.innerHTML = "Press start to get back to work!";
+
+  statusClass = "timer-active";
+  timerElement.className = statusClass;
+  statusElement.className = statusClass;
+};
+
 resetButton.onclick = e => {
-  currentTimer = timerIsActive ? POMODORO_COUNT : BREAK_COUNT;
-  updateDisplay();
+  if (workTimerIsActive === true) {
+    setTimer(POMODORO_COUNT);
+    return;
+  }
+  setRestTimer(REST_COUNT);
 };
 
 function startTimer(startStopButton) {
   timerInterval = setInterval(() => {
-    currentTimer -= 1;
-    updateDisplay();
+    if (workTimerIsActive === true) {
+      workTimerCount -= 1;
+      updateDisplay(workTimerCount);
 
-    if (currentTimer === 0) {
-      clearInterval(timerInterval);
-      alarmSound.play();
+      if (workTimerCount === 0) {
+        clearInterval(timerInterval);
+        alarmSound.play();
+      }
+    } else {
+      restTimerCount -= 1;
+      updateDisplay(restTimerCount);
+
+      if (restTimerCount === 0) {
+        clearInterval(timerInterval);
+        alarmSound.play();
+      }
     }
   }, 1000);
 
   startStopButton.innerHTML = "Stop";
   resetButton.disabled = true;
+
+  restButton.disabled = true;
+  workButton.disabled = true;
 }
 
 function stopTimer(startStopButton) {
@@ -48,36 +93,64 @@ function stopTimer(startStopButton) {
   startStopButton.innerHTML = "Start";
   resetButton.disabled = false;
 
-  if (currentTimer === 0) {
-    timerIsActive = !timerIsActive;
-    currentTimer = timerIsActive ? POMODORO_COUNT : BREAK_COUNT;
-    if (timerIsActive) {
+  if (workTimerCount === 0) {
+    workTimerIsActive = !workTimerIsActive;
+    workTimerCount = workTimerIsActive ? POMODORO_COUNT : REST_COUNT;
+    if (workTimerIsActive) {
       statusElement.innerHTML = "Press start to get back to work!";
     } else {
       statusElement.innerHTML = "Press start to begin your break!";
     }
 
-    statusClass = timerIsActive === true ? "timer-active" : "timer-inactive";
+    statusClass =
+      workTimerIsActive === true ? "timer-active" : "timer-inactive";
     timerElement.className = statusClass;
     statusElement.className = statusClass;
     updateDisplay();
   }
+
+  restButton.disabled = false;
+  workButton.disabled = false;
 }
 
-function getMinutes() {
-  let minutes = Math.floor(currentTimer / 60);
+function getMinutes(count) {
+  let minutes = Math.floor(count / 60);
   minutes = minutes < 10 ? "0" + minutes : minutes;
   return minutes === 0 ? "00" : minutes;
 }
 
-function getSeconds() {
-  let seconds = Math.floor(currentTimer % 60);
+function getSeconds(count) {
+  let seconds = Math.floor(count % 60);
   seconds = seconds < 10 ? "0" + seconds : seconds;
   return seconds === 0 ? "00" : seconds;
 }
 
-function updateDisplay() {
-  timerElement.innerHTML = `${getMinutes()}:${getSeconds()}`;
+function setTimer(remainingTime) {
+  workTimerCount = remainingTime;
+  updateDisplay(workTimerCount);
 }
 
-updateDisplay();
+function setRestTimer(remainingTime) {
+  restTimerCount = remainingTime;
+  updateDisplay(restTimerCount);
+}
+
+function updateDisplay(count) {
+  timerElement.innerHTML = `${getMinutes(count)}:${getSeconds(count)}`;
+}
+
+if (workTimerIsActive === true) {
+  setTimer(workTimerCount);
+  statusElement.innerHTML = "Press start to get back to work!";
+
+  statusClass = "timer-active";
+  timerElement.className = statusClass;
+  statusElement.className = statusClass;
+} else {
+  setRestTimer(restTimerCount);
+  statusElement.innerHTML = "Press start to begin your break!";
+
+  statusClass = "timer-inactive";
+  timerElement.className = statusClass;
+  statusElement.className = statusClass;
+}
