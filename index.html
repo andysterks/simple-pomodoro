@@ -11,14 +11,18 @@
   <body>
     <div class="main-container">
       <h2 id="title-text">The World's Simplest Pomodoro Timer</h2>
+      <div class="start-stop-btn-container">
+        <input id="work-btn" type="radio" name="Work" value="work" />Work
+        <input id="rest-btn" type="radio" name="Rest" value="rest" />Rest
+      </div>
       <h1 id="status-text" class="timer-active"></h1>
       <h1 id="timer-text" class="timer-active"></h1>
-      <button id="toggle-btn">Start</button>
-      <button id="reset-btn">Reset</button>
-    </div>
-    <div>
-      <button id="rest-btn">Rest</button>
-      <button id="work-btn">Work</button>
+      <div class="btn-container">
+        <div class="start-stop-btn-container">
+          <button id="toggle-btn">Start</button>
+          <button id="reset-btn">Reset</button>
+        </div>
+      </div>
     </div>
     <audio id="alarm-beep" src="alarm.wav"></audio>
 

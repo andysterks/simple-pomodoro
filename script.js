@@ -1,5 +1,7 @@
-const POMODORO_COUNT = 1500;
-const REST_COUNT = 300;
+const debug = true;
+
+const POMODORO_COUNT = debug ? 3 : 1500;
+const REST_COUNT = debug ? 3 : 300;
 const alarmSound = document.querySelector("#alarm-beep");
 const toggleButton = document.querySelector("#toggle-btn");
 const statusElement = document.querySelector("#status-text");
@@ -34,6 +36,8 @@ restButton.onclick = e => {
   statusClass = "timer-inactive";
   timerElement.className = statusClass;
   statusElement.className = statusClass;
+
+  workButton.checked = false;
 };
 
 workButton.onclick = e => {
@@ -41,17 +45,19 @@ workButton.onclick = e => {
     return;
   }
   workTimerIsActive = true;
-  setTimer(workTimerCount);
+  setWorkTimer(workTimerCount);
   statusElement.innerHTML = "Press start to get back to work!";
 
   statusClass = "timer-active";
   timerElement.className = statusClass;
   statusElement.className = statusClass;
+
+  restButton.checked = false;
 };
 
 resetButton.onclick = e => {
   if (workTimerIsActive === true) {
-    setTimer(POMODORO_COUNT);
+    setWorkTimer(POMODORO_COUNT);
     return;
   }
   setRestTimer(REST_COUNT);
@@ -125,7 +131,7 @@ function getSeconds(count) {
   return seconds === 0 ? "00" : seconds;
 }
 
-function setTimer(remainingTime) {
+function setWorkTimer(remainingTime) {
   workTimerCount = remainingTime;
   updateDisplay(workTimerCount);
 }
@@ -140,12 +146,14 @@ function updateDisplay(count) {
 }
 
 if (workTimerIsActive === true) {
-  setTimer(workTimerCount);
+  setWorkTimer(workTimerCount);
   statusElement.innerHTML = "Press start to get back to work!";
 
   statusClass = "timer-active";
   timerElement.className = statusClass;
   statusElement.className = statusClass;
+  workButton.checked = true;
+  restButton.checked = false;
 } else {
   setRestTimer(restTimerCount);
   statusElement.innerHTML = "Press start to begin your break!";
@@ -153,4 +161,6 @@ if (workTimerIsActive === true) {
   statusClass = "timer-inactive";
   timerElement.className = statusClass;
   statusElement.className = statusClass;
+  workButton.checked = false;
+  restButton.checked = true;
 }
