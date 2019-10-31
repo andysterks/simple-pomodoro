@@ -18,6 +18,36 @@ let timerInterval;
 statusElement.innerHTML = "Ready to get to work?";
 
 toggleButton.onclick = e => {
+  if (workTimerIsActive) {
+    if (workTimerCount === 0) {
+      workTimerIsActive = !workTimerIsActive;
+      setWorkTimer(POMODORO_COUNT);
+
+      statusElement.innerHTML = "Press start to begin your break!";
+
+      statusClass = "timer-inactive";
+      timerElement.className = statusClass;
+      statusElement.className = statusClass;
+
+      workButton.checked = false;
+      restButton.checked = true;
+    }
+  } else {
+    if (restTimerCount === 0) {
+      workTimerIsActive = !workTimerIsActive;
+      setRestTimer(REST_COUNT);
+
+      statusElement.innerHTML = "Press start to get back to work!";
+
+      statusClass = "timer-active";
+      timerElement.className = statusClass;
+      statusElement.className = statusClass;
+
+      workButton.checked = true;
+      restButton.checked = false;
+    }
+  }
+
   if (!timerInterval) {
     startTimer(e.target);
   } else {
