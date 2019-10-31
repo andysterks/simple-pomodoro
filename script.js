@@ -1,4 +1,4 @@
-const debug = true;
+const debug = false;
 
 const POMODORO_COUNT = debug ? 3 : 1500;
 const REST_COUNT = debug ? 3 : 300;
