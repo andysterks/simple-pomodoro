@@ -4,4 +4,4 @@ See the working version at [https://andysterks.github.io/simple-pomodoro/](https
 
 ## Authors
 
-* **Andy Sterkowitz** - [GitHub](https://github.com/andysterks)
+* **Andy Sterkowitz** - *Full-Stack Software Developer* - [Website](https://andysterkowitz.com) | [LinkedIn](https://www.linkedin.com/in/andrewsterkowitz/)
